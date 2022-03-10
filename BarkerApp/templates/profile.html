@@ -27,6 +27,20 @@
 		<li><img src="{{user.profile.avatar.url}}" alt=""></li>
 		{%endif%}
 	</ul>
+
+	{% if barks %}
+	<ul>
+		{% for bark in barks %}
+		<div>
+			<p>{{bark.author.user.username}}</p>
+			<p>{{bark.text}}</p>
+			{% if bark.media %}
+			<img src="{{bark.media.url}}" alt="">
+			{% endif %}
+		</div>
+		{% endfor %}
+	</ul>
+	{% endif %}
 </body>
 
 </html>

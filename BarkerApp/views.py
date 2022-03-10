@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 
-from .forms import UserForm, ProfileForm, LoginForm
+from .forms import UserForm, ProfileForm, LoginForm, BarkForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Request
+from .models import Profile, Request, Bark
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -71,6 +71,8 @@ def home_view(request):
 def get_profile_view(request, username):
     user = get_object_or_404(User, username=username)
 
+    barks = Bark.objects.filter(author=user.profile)
+
     if request.user.profile.connected_profiles.filter(user=user).exists():
         status = 'unfollow'
     elif Request.objects.filter(sender=user.profile, reciver=request.user.profile).exists():
@@ -82,7 +84,8 @@ def get_profile_view(request, username):
         
     context = {
         'user': user,
-        'status': status
+        'status': status,
+        'barks': barks
     }
     return render(request, 'profile.html', context)
 
@@ -157,3 +160,30 @@ def cancel_request(request, username):
     req.delete()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def post_bark(request):
+   
+    form = BarkForm(request.POST or None)
+
+    if form.is_valid():
+        bark = form.save(commit=False)
+        bark.author = request.user.profile
+        bark.save()
+
+        return redirect('home')
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'post_bark.html', context)
+
+def get_bark(request, bark_id):
+   
+    bark = get_object_or_404(Bark, id=bark_id)
+
+    context = {
+        'bark': bark,
+    }
+
+    return render(request, 'bark.html', context)

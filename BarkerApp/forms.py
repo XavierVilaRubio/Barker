@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from BarkerApp.models import Profile
+from BarkerApp.models import Profile, Bark
 
 class UserForm(forms.ModelForm):
 	class Meta:
@@ -25,4 +25,12 @@ class LoginForm(forms.ModelForm):
 		fields = [
 			'username',
 			'password'
+		]
+
+class BarkForm(forms.ModelForm):
+	class Meta:
+		model = Bark
+		fields = [
+			'text',
+			'media',
 		]

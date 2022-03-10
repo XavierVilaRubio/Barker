@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bark</title>
+</head>
+
+<body>
+	<div>
+		<p>{{bark.author.user.username}}</p>
+		<p>{{bark.text}}</p>
+		{% if bark.media %}
+		<img src="{{bark.media.url}}" alt="">
+		{% endif %}
+	</div>
+</body>
+
+</html>
