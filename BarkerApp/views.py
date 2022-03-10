@@ -14,6 +14,8 @@ def index_view(request):
     return redirect('login')
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     form = LoginForm()
 
     if request.method == 'POST':
@@ -32,6 +34,8 @@ def login_view(request):
     return render(request, 'signin.html', context)
 
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     
     user_form = UserForm(request.POST or None)
     profile_form = ProfileForm(request.POST or None)
