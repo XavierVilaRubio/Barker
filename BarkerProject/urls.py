@@ -14,19 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from BarkerApp.views import index_view, login_view, register_view, home_view, get_profile_view, edit_profile_view
+from BarkerApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index_view, name='index'),
-    path('home/', home_view, name='home'),
-    path('accounts/login/', login_view, name='login'),
-    path('accounts/register', register_view, name='register'),
-    path('user/<username>/', get_profile_view, name='profile'),
-    path('edit_profile/', edit_profile_view, name='edit_profile')
+    path('', views.index_view, name='index'),
+    path('home/', views.home_view, name='home'),
+    path('accounts/login/', views.login_view, name='login'),
+    path('accounts/register/', views.register_view, name='register'),
+    path('accounts/logout/', LogoutView.as_view(), name='logout'),
+    path('user/<username>/', views.get_profile_view, name='profile'),
+    path('edit_profile/', views.edit_profile_view, name='edit_profile'),
+    path('requests/', views.requests_view, name='requests'),
+    path('follow/<username>/', views.send_request, name='follow'),
+    path('unfollow/<username>/', views.unfollow, name='unfollow'),
+    path('accept/<username>/', views.accept_request, name='accept'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
