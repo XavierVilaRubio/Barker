@@ -9,9 +9,11 @@
 </head>
 
 <body>
-  <h1>Welcome to Barker</h1>
-  <a href="signin">SignIn</a>
-  <a href="signup">SignUp</a>
+  <h1>Welcome back to Barker</h1>
+  <form method="POST"> {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Enviar" />
+  </form>
 </body>
 
 </html>

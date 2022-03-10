@@ -9,9 +9,12 @@
 </head>
 
 <body>
-  <h1>Welcome to Barker</h1>
-  <a href="signin">SignIn</a>
-  <a href="signup">SignUp</a>
+  <h1>Join Barker</h1>
+  <form method="POST"> {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    <input type="submit" value="Enviar" />
+  </form>
 </body>
 
 </html>
