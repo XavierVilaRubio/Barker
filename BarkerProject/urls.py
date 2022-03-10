@@ -16,14 +16,16 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from BarkerApp.views import indexView, registerView, homeView
+from BarkerApp.views import index_view, register_view, home_view, get_profile_view, edit_profile_view
 from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/register', registerView, name='register'),
-    path('home/', homeView, name='home'),
-    path('', indexView, name='index')
+    path('accounts/register', register_view, name='register'),
+    path('home/', home_view, name='home'),
+    path('', index_view, name='index'),
+    path('user/<username>/', get_profile_view, name='profile'),
+    path('edit_profile/', edit_profile_view, name='edit_profile')
 ]
