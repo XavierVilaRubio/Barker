@@ -5,11 +5,13 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-def index(request):
-    return render(request, 'index.html')
+def indexView(request):
+    if request.user.is_authenticated:
+        return redirect('home')
 
-def signin(request):
-    
+    return redirect('login')
+
+def loginView(request):
     form = LoginForm()
 
     if request.method == 'POST':
@@ -19,7 +21,7 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/home/')
+            return redirect('Home')
 
     context = {
         'form': form,
@@ -27,7 +29,7 @@ def signin(request):
 
     return render(request, 'signin.html', context)
 
-def signup(request):
+def registerView(request):
     
     user_form = UserForm(request.POST or None)
     profile_form = ProfileForm(request.POST or None)
@@ -47,10 +49,10 @@ def signup(request):
         'profile_form': profile_form
     }
 
-    return render(request, 'signup.html', context)
+    return render(request, 'registration/register.html', context)
 
 @login_required(login_url='/signin/')
-def home(request):
+def homeView(request):
     context = {
         'user': request.user
     }

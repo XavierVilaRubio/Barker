@@ -10,6 +10,7 @@
 
 <body>
   <h1>Join Barker</h1>
+  <a href="/accounts/login">Login</a>
   <form method="POST"> {% csrf_token %}
     {{ user_form.as_p }}
     {{ profile_form.as_p }}
