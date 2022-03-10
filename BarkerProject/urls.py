@@ -33,6 +33,7 @@ urlpatterns = [
     path('follow/<username>/', views.send_request, name='follow'),
     path('unfollow/<username>/', views.unfollow, name='unfollow'),
     path('accept/<username>/', views.accept_request, name='accept'),
+    path('cancel/<username>/', views.cancel_request, name='cancel'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

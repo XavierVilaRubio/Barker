@@ -9,7 +9,7 @@ class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 	bio = models.CharField(max_length=160)
 	avatar = models.ImageField(null=True, blank=True)
-	connected_profiles = models.ManyToManyField("self")
+	connected_profiles = models.ManyToManyField("self", blank=True)
 
 	def __str__(self) -> str:
 		return self.user.username

@@ -6,8 +6,6 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Request
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
-
 
 # Create your views here.
 
@@ -63,28 +61,33 @@ def register_view(request):
 
 @login_required(login_url='/accounts/login/')
 def home_view(request):
+    connections = request.user.profile.connected_profiles.all()
     context = {
-        'user': request.user
+        'user': request.user,
+        'connections': connections
     }
     return render(request, 'home.html', context)
 
 def get_profile_view(request, username):
     user = get_object_or_404(User, username=username)
-    try:
-        request.user.profile.connected_profiles.get(user=user)
-        following = True
-    except ObjectDoesNotExist:
-        following = False
+
+    if request.user.profile.connected_profiles.filter(user=user).exists():
+        status = 'unfollow'
+    elif Request.objects.filter(sender=user.profile, reciver=request.user.profile).exists():
+        status = 'accept'
+    elif Request.objects.filter(sender=request.user.profile, reciver=user.profile).exists():
+        status = 'cancel'
+    else:
+        status = 'follow'
         
     context = {
         'user': user,
-        'following': following
+        'status': status
     }
     return render(request, 'profile.html', context)
 
 @login_required(login_url='/accounts/login/')
 def edit_profile_view(request):
-
     user_form = UserForm(request.POST or None, instance=request.user)
     profile_form = ProfileForm(request.POST or None, instance=request.user.profile)
 
@@ -116,10 +119,12 @@ def send_request(request, username):
     sender_profile = sender_user.profile
     reciver_user = User.objects.get(username=username)
     reciver_profile = reciver_user.profile
-    req = Request(sender=sender_profile, reciver=reciver_profile)
-    req.save()
 
-    return redirect('/')
+    if not Request.objects.filter(sender=sender_profile, reciver=reciver_profile).exists():
+        req = Request(sender=sender_profile, reciver=reciver_profile)
+        req.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def unfollow(request, username):
     user = get_object_or_404(User, username=username)
@@ -140,4 +145,15 @@ def accept_request(request, username):
     sender_profile.connected_profiles.add(reciver_profile)
     reciver_profile.connected_profiles.add(sender_profile)
 
-    return redirect('/')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def cancel_request(request, username):
+    sender_user = request.user
+    sender_profile = sender_user.profile
+    reciver_user = User.objects.get(username=username)
+    reciver_profile = reciver_user.profile
+
+    req = Request.objects.filter(sender=sender_profile, reciver=reciver_profile)
+    req.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

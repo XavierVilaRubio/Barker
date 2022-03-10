@@ -10,7 +10,14 @@
 
 <body>
 	<h1>Hola {{user}}</h1>
+	<a href="/requests/">Requests</a>
 	<a href="/accounts/logout/">Logout</a>
+	<p>Your connections:</p>
+	<ul>
+		{% for profile in connections %}
+		<li><a href="/user/{{profile}}">{{profile}}</a></li>
+		{% endfor %}
+	</ul>
 </body>
 
 </html>

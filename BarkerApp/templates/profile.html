@@ -13,10 +13,8 @@
 	<p>You are {{request.user}}</p>
 	{% if user == request.user %}
 	<a href="/edit_profile/">Edit profile</a>
-	{% elif following %}
-	<a href="/unfollow/{{user}}">Unfollow</a>
 	{% else %}
-	<a href="/follow/{{user}}">Follow</a>
+	<a href="/{{status}}/{{user}}">{{ status|title }}</a>
 	{% endif %}
 
 	<ul>
