@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
-
-from .forms import UserForm, ProfileForm, LoginForm, BarkForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Request, Bark
 from django.contrib.auth.models import User
+
+from .forms import UserForm, ProfileForm, LoginForm, BarkForm
+from .models import Profile, Request, Bark
 
 # Create your views here.
 
@@ -18,9 +18,10 @@ def index_view(request):
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('home')
-    form = LoginForm()
 
-    if request.method == 'POST':
+    form = LoginForm(request.POST or None)
+
+    if form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
 
@@ -50,7 +51,7 @@ def register_view(request):
 
         login(request, user)
 
-        return redirect('/')
+        return redirect('home')
 
     context = {
         'user_form': user_form,
@@ -107,7 +108,7 @@ def edit_profile_view(request):
 
     return render(request, 'edit_profile.html', context)
 
-@login_required(login_url='/signin/')
+@login_required(login_url='/accounts/login/')
 def requests_view(request):
     requests = Request.objects.filter(reciver=request.user.id)
 
@@ -117,6 +118,7 @@ def requests_view(request):
 
     return render(request, 'requests.html', context)
 
+@login_required(login_url='/accounts/login/')
 def send_request(request, username):
     sender_user = request.user
     sender_profile = sender_user.profile
@@ -161,6 +163,7 @@ def cancel_request(request, username):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required(login_url='/accounts/login/')
 def post_bark(request):
    
     form = BarkForm(request.POST or None)
@@ -170,7 +173,7 @@ def post_bark(request):
         bark.author = request.user.profile
         bark.save()
 
-        return redirect('home')
+        return redirect(bark.get_absolute_url())
 
     context = {
         'form': form,
@@ -184,6 +187,51 @@ def get_bark(request, bark_id):
 
     context = {
         'bark': bark,
+        'editable': bark.author == request.user.profile
     }
 
     return render(request, 'bark.html', context)
+
+def delete_bark(request, bark_id):
+    bark = get_object_or_404(Bark, id=bark_id)
+    bark.delete()
+    
+    return redirect(request.user.profile.get_absolute_url())
+
+def edit_bark(request, bark_id):
+    bark = get_object_or_404(Bark, id=bark_id)
+    form = BarkForm(request.POST or None, instance=bark)
+
+    if form.is_valid():
+        bark = form.save()
+
+        return redirect(bark.get_absolute_url())
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'edit_bark.html', context)
+
+def reply_bark(request, bark_id):
+   
+    original_bark = get_object_or_404(Bark, id=bark_id)
+    form = BarkForm(request.POST or None)
+
+    if form.is_valid():
+        bark = form.save(commit=False)
+        bark.author = request.user.profile
+        bark.reply_to = original_bark
+        bark.save()
+
+        original_bark.replies.add(bark)
+        original_bark.save()
+
+        return redirect(bark.get_absolute_url())
+
+    context = {
+        'form': form,
+        'bark': original_bark
+    }
+
+    return render(request, 'reply_bark.html', context)

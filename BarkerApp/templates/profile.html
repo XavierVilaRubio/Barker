@@ -10,7 +10,7 @@
 </head>
 
 <body>
-	<p>You are {{request.user}}</p>
+	<h1>@{{request.user}}</h1>
 	{% if user == request.user %}
 	<a href="/edit_profile/">Edit profile</a>
 	{% else %}
@@ -31,13 +31,15 @@
 	{% if barks %}
 	<ul>
 		{% for bark in barks %}
-		<div>
-			<p>{{bark.author.user.username}}</p>
-			<p>{{bark.text}}</p>
-			{% if bark.media %}
-			<img src="{{bark.media.url}}" alt="">
-			{% endif %}
-		</div>
+		<a href="{{ bark.get_absolute_url }}">
+			<div>
+				<p>{{bark.author.user.username}}</p>
+				<p>{{bark.text}}</p>
+				{% if bark.media %}
+				<img src="{{bark.media.url}}" alt="">
+				{% endif %}
+			</div>
+		</a>
 		{% endfor %}
 	</ul>
 	{% endif %}

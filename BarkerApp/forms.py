@@ -1,13 +1,15 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from BarkerApp.models import Profile, Bark
 
-class UserForm(forms.ModelForm):
+class UserForm(UserCreationForm):
 	class Meta:
 		model = User
 		fields = [
 			'username',
-			'password',
+			'password1',
+			'password2',
 			'email',
 		]
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import datetime    
 
@@ -15,7 +16,7 @@ class Profile(models.Model):
 		return self.user.username
 
 	def get_absolute_url(self):
-		return reverse('profile', kwargs={'user':self})
+		return reverse('profile', kwargs={'username':self})
 		
 class Request(models.Model):
 	date = models.DateTimeField(default=datetime.now)
@@ -26,12 +27,12 @@ class Request(models.Model):
 		return "Request from {sender} to {reciver}".format(sender=self.sender, reciver=self.reciver)
 
 class Bark(models.Model):
-	reply_to = models.ForeignKey("self", blank=True, null=True, on_delete=models.SET_NULL)
+	reply_to = models.ForeignKey("self", blank=True, null=True, on_delete=models.SET_NULL, related_name='parent_bark')
 	author = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
 	text = models.TextField(max_length=280)
 	media = models.ImageField(null=True, blank=True)
 	date = models.DateTimeField(default=datetime.now)
-	replies = models.ManyToManyField("self", blank=True)
+	replies = models.ManyToManyField("self", blank=True, symmetrical=False)
 	
 	def get_absolute_url(self):
-		return reverse('bark', kwargs={'id':self.id})
+		return reverse('bark', kwargs={'bark_id':self.id})

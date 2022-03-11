@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView, LoginView
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
@@ -24,10 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index_view, name='index'),
     path('home/', views.home_view, name='home'),
-    path('accounts/login/', views.login_view, name='login'),
+    path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/register/', views.register_view, name='register'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
-    path('user/<username>/', views.get_profile_view, name='profile'),
     path('edit_profile/', views.edit_profile_view, name='edit_profile'),
     path('requests/', views.requests_view, name='requests'),
     path('follow/<username>/', views.send_request, name='follow'),
@@ -36,6 +35,10 @@ urlpatterns = [
     path('cancel/<username>/', views.cancel_request, name='cancel'),
     path('post_bark/', views.post_bark, name='post_bark'),
     path('bark/<int:bark_id>/', views.get_bark, name='bark'),
+    path('delete_bark/<int:bark_id>/', views.delete_bark, name='delete_bark'),
+    path('edit_bark/<int:bark_id>/', views.edit_bark, name='edit_bark'),
+    path('reply_bark/<int:bark_id>/', views.reply_bark, name='reply_bark'),
+    path('<username>/', views.get_profile_view, name='profile'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

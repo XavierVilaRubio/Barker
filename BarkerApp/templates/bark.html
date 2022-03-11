@@ -7,16 +7,79 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bark</title>
+	<style>
+		a {
+			color: black;
+			text-decoration: none;
+		}
+
+		.reply {
+			color: rgb(238, 32, 221);
+		}
+	</style>
 </head>
 
 <body>
-	<div>
-		<p>{{bark.author.user.username}}</p>
-		<p>{{bark.text}}</p>
-		{% if bark.media %}
-		<img src="{{bark.media.url}}" alt="">
-		{% endif %}
-	</div>
+	{% if editable %}
+	<a href="/edit_bark/{{bark.id}}">Edit</a>
+	<a href="/delete_bark/{{bark.id}}">Delete</a>
+	{% endif %}
+
+	<!-- Parent -->
+	{% if bark.reply_to %}
+	<a href="/bark/{{bark.reply_to.id}}">
+		<div id="{{bark.reply_to.id}}" style="border: 1px solid gray; margin: 16px; padding: 8px; border-radius: 10px;">
+			<p>{{bark.reply_to.author.user.username}}</p>
+			<p>{{bark.reply_to.text}}</p>
+			{% if bark.reply_to.media %}
+			<img src="{{bark.reply_to.media.url}}" alt="">
+			{% endif %}
+		</div>
+	</a>
+	{% endif %}
+
+	<!-- Main Bark -->
+	<a href="/bark/{{bark.id}}">
+		<div id="{{bark.id}}" style="border: 1px solid gray; margin: 16px; padding: 8px; border-radius: 10px;">
+			<b>{{bark.author.user.username}}</b>
+			<p>{{bark.text}}</p>
+			{% if bark.media %}
+			<img src="{{bark.media.url}}" alt="">
+			{% endif %}
+			<a class="reply" href="/reply_bark/{{bark.id}}">Reply</a>
+		</div>
+	</a>
+
+	{% if bark.replies %}
+	{% for reply in bark.replies.all %}
+	<a href="/bark/{{reply.id}}">
+		<div id="{{reply.id}}"
+			style="border: 1px solid gray; margin: 16px 16px 16px 32px; padding: 8px; border-radius: 10px;">
+			<b>{{reply.author.user.username}}</b>
+			<p>{{reply.text}}</p>
+			{% if reply.media %}
+			<img src="{{reply.media.url}}" alt="">
+			{% endif %}
+			<a class="reply" href="/reply_bark/{{bark.id}}">Reply</a>
+		</div>
+	</a>
+	{% if reply.replies %}
+	{% for reply in reply.replies.all %}
+	<a href="/bark/{{reply.id}}">
+		<div id="{{reply.id}}"
+			style="border: 1px solid gray; margin: 16px 16px 16px 64px; padding: 8px; border-radius: 10px;">
+			<b>{{reply.author.user.username}}</b>
+			<p>{{reply.text}}</p>
+			{% if reply.media %}
+			<img src="{{reply.media.url}}" alt="">
+			{% endif %}
+			<a class="reply" href="/reply_bark/{{bark.id}}">Reply</a>
+		</div>
+	</a>
+	{% endfor %}
+	{% endif %}
+	{% endfor %}
+	{% endif %}
 </body>
 
 </html>

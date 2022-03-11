@@ -10,12 +10,14 @@
 
 <body>
 	<h1>Hola {{user}}</h1>
-	<a href="/requests/">Requests</a>
-	<a href="/accounts/logout/">Logout</a>
+	<a href="{% url 'requests' %}">Requests</a>
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{{ user.profile.get_absolute_url }}">Profile</a>
+	<a href="{% url 'post_bark' %}">Bark</a>
 	<p>Your connections:</p>
 	<ul>
 		{% for profile in connections %}
-		<li><a href="/user/{{profile}}">{{profile}}</a></li>
+		<li><a href="{{ profile.get_absolute_url }}">{{profile}}</a></li>
 		{% endfor %}
 	</ul>
 </body>
