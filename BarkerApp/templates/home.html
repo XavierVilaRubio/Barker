@@ -1,25 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Home</title>
-</head>
-
-<body>
-	<h1>Hola {{user}}</h1>
-	<a href="{% url 'requests' %}">Requests</a>
-	<a href="{% url 'logout' %}">Logout</a>
-	<a href="{{ user.profile.get_absolute_url }}">Profile</a>
-	<a href="{% url 'post_bark' %}">Bark</a>
-	<p>Your connections:</p>
-	<ul>
-		{% for profile in connections %}
-		<li><a href="{{ profile.get_absolute_url }}">{{profile}}</a></li>
-		{% endfor %}
-	</ul>
-</body>
-
-</html>
+{% extends "base.html" %}
+{% block body %}
+<h1>Hola {{user}}</h1>
+<a href="{% url 'logout' %}">Logout</a>
+<a href="{% url 'post_bark' %}">Bark</a>
+<p>Your connections:</p>
+<ul>
+	{% for profile in connections %}
+	<li><a href="{{ profile.get_absolute_url }}">{{profile}}</a></li>
+	{% endfor %}
+</ul>
+{% endblock %}

@@ -1,48 +1,37 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block body %}
+<h1>@{{user}}</h1>
+{% if user == request.user %}
+<a href="/edit_profile/">Edit profile</a>
+{% else %}
+<a href="/{{status}}/{{user}}">{{ status|title }}</a>
+{% endif %}
 
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{user.username}}</title>
-</head>
+<ul>
+	<li>Username: {{user.username}}</li>
+	<li>Email: {{user.email}}</li>
+	<li>First Name: {{user.first_name}}</li>
+	<li>Last Name: {{user.last_name}}</li>
+	<li>{{user.profile.bio}}</li>
+	{% if user.profile.avatar %}
+	<li><img src="{{user.profile.avatar.url}}" alt=""></li>
+	{%endif%}
+</ul>
 
-<body>
-	<h1>@{{request.user}}</h1>
-	{% if user == request.user %}
-	<a href="/edit_profile/">Edit profile</a>
-	{% else %}
-	<a href="/{{status}}/{{user}}">{{ status|title }}</a>
-	{% endif %}
-
-	<ul>
-		<li>Username: {{user.username}}</li>
-		<li>Email: {{user.email}}</li>
-		<li>First Name: {{user.first_name}}</li>
-		<li>Last Name: {{user.last_name}}</li>
-		<li>{{user.profile.bio}}</li>
-		{% if user.profile.avatar %}
-		<li><img src="{{user.profile.avatar.url}}" alt=""></li>
-		{%endif%}
-	</ul>
-
-	{% if barks %}
-	<ul>
-		{% for bark in barks %}
-		<a href="{{ bark.get_absolute_url }}">
-			<div>
-				<p>{{bark.author.user.username}}</p>
-				<p>{{bark.text}}</p>
-				{% if bark.media %}
-				<img src="{{bark.media.url}}" alt="">
-				{% endif %}
-			</div>
-		</a>
-		{% endfor %}
-	</ul>
-	{% endif %}
-</body>
-
-</html>
+{% if barks %}
+<ul>
+	{% for bark in barks %}
+	<a href="{{ bark.get_absolute_url }}">
+		<div>
+			<p>{{bark.author.user.username}}</p>
+			<p>{{bark.text}}</p>
+			{% if bark.media %}
+			<img src="{{bark.media.url}}" alt="">
+			{% endif %}
+		</div>
+	</a>
+	{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

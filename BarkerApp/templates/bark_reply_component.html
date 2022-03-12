@@ -1,17 +1,3 @@
-{% extends "base.html" %}
-{% load static %}
-{% block body %}
-{% if editable %}
-<a href="/edit_bark/{{bark.id}}">Edit</a>
-<a href="/delete_bark/{{bark.id}}">Delete</a>
-{% endif %}
-
-{% if bark.reply_to %}
-{% with bark=bark.reply_to template_name="bark_parent_component.html" %}
-{% include template_name %}
-{% endwith %}
-{% endif %}
-
 <a href="/bark/{{bark.id}}">
 	<div id="{{bark.id}}" style="border: 1px solid gray; margin: 16px; padding: 8px; border-radius: 10px;">
 		<b>{{bark.author.user.username}}</b>
@@ -23,12 +9,10 @@
 	</div>
 </a>
 
-{% if bark.replies %}
+<!-- {% if bark.replies %}
 {% for reply in bark.replies.all %}
 {% with bark=reply template_name="bark_reply_component.html" %}
 {% include template_name %}
 {% endwith %}
 {% endfor %}
-{% endif %}
-
-{% endblock %}
+{% endif %} -->
