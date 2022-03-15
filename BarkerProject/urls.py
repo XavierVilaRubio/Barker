@@ -39,6 +39,4 @@ urlpatterns = [
     path('edit_bark/<int:bark_id>/', views.edit_bark, name='edit_bark'),
     path('reply_bark/<int:bark_id>/', views.reply_bark, name='reply_bark'),
     path('<username>/', views.get_profile_view, name='profile'),
-]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

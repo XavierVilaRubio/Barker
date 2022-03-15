@@ -120,9 +120,9 @@ STATIC_URL = 'static/'
 
 MEDIA_URL = 'images/'
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "BarkerApp/static"
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / "BarkerApp" / "static"
+]
 
 MEDIA_ROOT = BASE_DIR / 'BarkerApp' / STATIC_URL / MEDIA_URL
 

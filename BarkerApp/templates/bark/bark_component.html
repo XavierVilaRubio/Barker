@@ -1,0 +1,10 @@
+<a href="/bark/{{bark.id}}">
+  <div class="bark">
+    <b>{{bark.author.user.username}}</b>
+    <p>{{bark.text}}</p>
+    {% if bark.media %}
+    <img src="{{bark.media.url}}" alt="" />
+    {% endif %}
+    <a class="reply" href="/reply_bark/{{bark.id}}">Reply</a>
+  </div>
+</a>

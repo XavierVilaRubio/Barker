@@ -1,9 +1,0 @@
-{% if bark.reply_to %}
-{% with bark=bark.reply_to template_name="bark_parent_component.html" %}
-{% include template_name %}
-{% endwith %}
-{% endif %}
-
-{% with bark=bark template_name="bark_component.html" %}
-	{% include template_name %}
-{% endwith %}

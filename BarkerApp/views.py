@@ -41,7 +41,7 @@ def register_view(request):
         return redirect('home')
     
     user_form = UserForm(request.POST or None)
-    profile_form = ProfileForm(request.POST or None)
+    profile_form = ProfileForm(request.POST or None, request.FILES or None)
 
     if user_form.is_valid() and profile_form.is_valid():
         user = user_form.save()
@@ -88,12 +88,12 @@ def get_profile_view(request, username):
         'status': status,
         'barks': barks
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'profile/profile.html', context)
 
 @login_required(login_url='/accounts/login/')
 def edit_profile_view(request):
     user_form = UserForm(request.POST or None, instance=request.user)
-    profile_form = ProfileForm(request.POST or None, instance=request.user.profile)
+    profile_form = ProfileForm(request.POST or None, request.FILES or None, instance=request.user.profile)
 
     if user_form.is_valid() and profile_form.is_valid():
         user_form.save()
@@ -106,7 +106,7 @@ def edit_profile_view(request):
         'profile_form': profile_form
     }
 
-    return render(request, 'edit_profile.html', context)
+    return render(request, 'profile/edit_profile.html', context)
 
 @login_required(login_url='/accounts/login/')
 def requests_view(request):
@@ -166,7 +166,7 @@ def cancel_request(request, username):
 @login_required(login_url='/accounts/login/')
 def post_bark(request):
    
-    form = BarkForm(request.POST or None)
+    form = BarkForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
         bark = form.save(commit=False)
@@ -179,7 +179,7 @@ def post_bark(request):
         'form': form,
     }
 
-    return render(request, 'post_bark.html', context)
+    return render(request, 'bark/post_bark.html', context)
 
 def get_bark(request, bark_id):
    
@@ -190,7 +190,7 @@ def get_bark(request, bark_id):
         'editable': bark.author == request.user.profile
     }
 
-    return render(request, 'bark.html', context)
+    return render(request, 'bark/bark.html', context)
 
 def delete_bark(request, bark_id):
     bark = get_object_or_404(Bark, id=bark_id)
@@ -200,7 +200,7 @@ def delete_bark(request, bark_id):
 
 def edit_bark(request, bark_id):
     bark = get_object_or_404(Bark, id=bark_id)
-    form = BarkForm(request.POST or None, instance=bark)
+    form = BarkForm(request.POST or None, request.FILES or None, instance=bark)
 
     if form.is_valid():
         bark = form.save()
@@ -211,12 +211,12 @@ def edit_bark(request, bark_id):
         'form': form,
     }
 
-    return render(request, 'edit_bark.html', context)
+    return render(request, 'bark/edit_bark.html', context)
 
 def reply_bark(request, bark_id):
    
     original_bark = get_object_or_404(Bark, id=bark_id)
-    form = BarkForm(request.POST or None)
+    form = BarkForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
         bark = form.save(commit=False)
@@ -234,4 +234,4 @@ def reply_bark(request, bark_id):
         'bark': original_bark
     }
 
-    return render(request, 'reply_bark.html', context)
+    return render(request, 'bark/reply_bark.html', context)

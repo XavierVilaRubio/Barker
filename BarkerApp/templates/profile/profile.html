@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<h1>@{{user}}</h1>
+{% if user == request.user %}
+<a href="/edit_profile/">Edit profile</a>
+{% else %}
+<a href="/{{status}}/{{user}}">{{ status|title }}</a>
+{% endif %}
+
+<ul>
+	<li>Username: {{user.username}}</li>
+	<li>Email: {{user.email}}</li>
+	<li>First Name: {{user.first_name}}</li>
+	<li>Last Name: {{user.last_name}}</li>
+	<li>{{user.profile.bio}}</li>
+	{% if user.profile.avatar %}
+	<li><img src="{{user.profile.avatar.url}}" alt=""></li>
+	{%endif%}
+</ul>
+
+{% if barks %}
+
+{% for bark in barks %}
+	{% with template_name="bark_component.html" %}
+		{% include template_name %}
+	{% endwith %}
+{% endfor %}
+
+{% endif %}
+{% endblock %}
