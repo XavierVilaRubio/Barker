@@ -1,0 +1,11 @@
+main {
+  background: #f4f8fb;
+  padding-inline: 10vw;
+}
+
+.bark {
+  border: 1px solid gray;
+  margin-block: 16px;
+  padding: 8px;
+  border-radius: 10px;
+}

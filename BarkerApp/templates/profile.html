@@ -20,18 +20,12 @@
 </ul>
 
 {% if barks %}
-<ul>
-	{% for bark in barks %}
-	<a href="{{ bark.get_absolute_url }}">
-		<div>
-			<p>{{bark.author.user.username}}</p>
-			<p>{{bark.text}}</p>
-			{% if bark.media %}
-			<img src="{{bark.media.url}}" alt="">
-			{% endif %}
-		</div>
-	</a>
-	{% endfor %}
-</ul>
+
+{% for bark in barks %}
+	{% with template_name="bark_component.html" %}
+		{% include template_name %}
+	{% endwith %}
+{% endfor %}
+
 {% endif %}
 {% endblock %}
