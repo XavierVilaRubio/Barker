@@ -1,11 +1,18 @@
 {% extends "base.html" %}
+
 {% block body %}
+
 {% for request in requests %}
-<div>
-	<p>From: {{request.sender}}</p>
-	<p>To: {{request.reciver}}</p>
-	<p>Date: {{request.date}}</p>
-	<a href="/accept/{{request.sender}}">Accept</a>
-</div>
+	<div>
+		<p>From: {{request.sender}}</p>
+		<p>To: {{request.reciver}}</p>
+		<p>Date: {{request.date}}</p>
+		<a href="/accept/{{request.sender}}">Accept</a>
+	</div>
+
+	{% empty %}
+
+	<p class="position-absolute top-50 start-50 translate-middle">Start making friends!</p>
+
 {% endfor %}
 {% endblock %}

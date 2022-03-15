@@ -1,6 +1,6 @@
 main {
   background: #f4f8fb;
-  padding-inline: 10vw;
+  padding-block: 67px;
 }
 
 .bark {
@@ -8,4 +8,35 @@ main {
   margin-block: 16px;
   padding: 8px;
   border-radius: 10px;
+}
+
+.bark-button {
+  position: absolute;
+  top: 0;
+  background: #FFC8DD;
+  padding: 16px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+@media (min-width: 992px) { 
+
+  .link-primary {
+    position: relative;
+  }
+
+  .link-primary > img {
+    filter: invert(28%) sepia(94%) saturate(2505%) hue-rotate(210deg) brightness(102%) contrast(104%);
+  }
+
+  .link-primary::after {
+    right: -16px;
+    position: absolute;
+    content: '';
+    height: 30px;
+    width: 3px;
+    background: #0d6dfdbd;
+  }
+
 }

@@ -10,18 +10,18 @@
 {% endif %}
 
 {% if bark.reply_to %}
-	{% with bark=bark.reply_to template_name="bark_parent_component.html" %}
+	{% with bark=bark.reply_to template_name="bark/bark_parent_component.html" %}
 		{% include template_name %}
 	{% endwith %}
 {% endif %}
 
-{% with template_name="bark_component.html" %}
+{% with template_name="bark/bark_component.html" %}
 	{% include template_name %}
 {% endwith %}
 
 {% if bark.replies %}
 	{% for reply in bark.replies.all %}
-		{% with bark=reply template_name="bark_reply_component.html" %}
+		{% with bark=reply template_name="bark/bark_reply_component.html" %}
 			{% include template_name %}
 		{% endwith %}
 	{% endfor %}

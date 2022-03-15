@@ -22,7 +22,7 @@
 {% if barks %}
 
 {% for bark in barks %}
-	{% with template_name="bark_component.html" %}
+	{% with template_name="bark/bark_component.html" %}
 		{% include template_name %}
 	{% endwith %}
 {% endfor %}
