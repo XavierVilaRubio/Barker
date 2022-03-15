@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 
 from .forms import UserForm, ProfileForm, LoginForm, BarkForm
 from .models import Profile, Request, Bark
@@ -63,9 +64,15 @@ def register_view(request):
 @login_required(login_url='/accounts/login/')
 def home_view(request):
     connections = request.user.profile.connected_profiles.all()
+    barks = []
+    for profile in connections:
+        barks += Bark.objects.filter(author=profile)
+    barks += Bark.objects.filter(author=request.user.profile)
+    barks.sort(key=lambda x: x.date, reverse=True)
     context = {
         'user': request.user,
-        'connections': connections
+        'connections': connections,
+        'barks': barks
     }
     return render(request, 'home.html', context)
 

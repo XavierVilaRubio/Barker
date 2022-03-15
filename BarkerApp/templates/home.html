@@ -2,11 +2,17 @@
 {% block body %}
 <h1>Hola {{user}}</h1>
 <a href="{% url 'logout' %}">Logout</a>
-<a href="{% url 'post_bark' %}">Bark</a>
 <p>Your connections:</p>
 <ul>
 	{% for profile in connections %}
 	<li><a href="{{ profile.get_absolute_url }}">{{profile}}</a></li>
 	{% endfor %}
 </ul>
+
+{% for bark in barks %}
+	{% with bark=bark template_name="bark/bark_component.html" %}
+		{% include template_name %}
+	{% endwith %}
+{% endfor %}
+
 {% endblock %}

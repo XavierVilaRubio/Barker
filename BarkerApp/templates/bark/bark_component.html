@@ -1,6 +1,7 @@
 <a href="/bark/{{bark.id}}">
   <div class="bark">
     <b>{{bark.author.user.username}}</b>
+    <p>{{bark.date}}</p>
     <p>{{bark.text}}</p>
     {% if bark.media %}
     <img class="img-fluid" src="{{bark.media.url}}" alt="" />
