@@ -24,10 +24,12 @@ class ProfileForm(forms.ModelForm):
 class LoginForm(forms.ModelForm):
 	class Meta:
 		model = User
-		fields = [
-			'username',
-			'password'
-		]
+		fields = ('username', 'password')
+
+		widgets = {
+			'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+			'password': forms.TextInput(attrs={'type': 'password', 'class': 'form-control', 'placeholder': 'password'})
+		}
 
 class BarkForm(forms.ModelForm):
 	class Meta:

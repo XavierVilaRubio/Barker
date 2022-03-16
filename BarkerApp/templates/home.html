@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
 <h1>Hola {{user}}</h1>
-<a href="{% url 'logout' %}">Logout</a>
 <p>Your connections:</p>
 <ul>
 	{% for profile in connections %}
@@ -10,9 +9,9 @@
 </ul>
 
 {% for bark in barks %}
-	{% with bark=bark template_name="bark/bark_component.html" %}
-		{% include template_name %}
-	{% endwith %}
+{% with bark=bark template_name="bark/bark_component.html" %}
+{% include template_name %}
+{% endwith %}
 {% endfor %}
 
 {% endblock %}

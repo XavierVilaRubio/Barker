@@ -6,16 +6,46 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Barker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
-  <h1>Join Barker</h1>
-  <a href="{% url 'login' %}">Login</a>
-  <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
-    <input type="submit" value="Enviar" />
-  </form>
+  <div class="container vh-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-6 card">
+        <div class="card-body">
+          <form>
+            <div class="form-group">
+              <label for="usuarioRegistro">Usuario</label>
+              <input type="text" class="form-control" id="usuarioRegistro" aria-describedby="userHelp"
+                placeholder="Introduzca un nombre de usuario.">
+              <small id="userHelp" class="form-text text-muted">El nombre de usuario debe contener al menos 3
+                carácteres.</small>
+            </div>
+            <div class="form-group">
+              <label for="passwordRegistro">Contraseña</label>
+              <input type="password" class="form-control" id="passwordRegistro" aria-describedby="passwordHelp"
+                placeholder="Contraseña">
+              <small id="passwordHelp" class="form-text text-muted">La contraseña debe contener, como mínimo, 8
+                carácteres
+                incluyendo un símbolo, una mayúscula, una minúscula y un número.</small>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="termsCheck">
+              <label class="form-check-label" for="termsCheck">Acepto los <a href="http://127.0.0.1:8000/ToS/">términos
+                  y
+                  condiciones</a></label> <!-- Aparece una card? -->
+            </div>
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </html>
