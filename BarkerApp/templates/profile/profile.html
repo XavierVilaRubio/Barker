@@ -1,31 +1,42 @@
 {% extends "base.html" %}
 {% load static %}
 {% block body %}
-<h1>@{{user}}</h1>
+{% if user.profile.avatar %}
+<img src="{{user.profile.avatar.url}}" alt="">
+{%endif%}
+<h1 style="color: #0d6efd;">@{{user}}</h1>
 {% if user == request.user %}
 <a href="/edit_profile/">Edit profile</a>
 {% else %}
 <a href="/{{status}}/{{user}}">{{ status|title }}</a>
 {% endif %}
 
-<ul>
-	<li>Username: {{user.username}}</li>
-	<li>Email: {{user.email}}</li>
-	<li>First Name: {{user.first_name}}</li>
-	<li>Last Name: {{user.last_name}}</li>
-	<li>{{user.profile.bio}}</li>
-	{% if user.profile.avatar %}
-	<li><img src="{{user.profile.avatar.url}}" alt=""></li>
-	{%endif%}
-</ul>
+<div class="card">
+	<div class="card-body">
+		<ul>
+			<li>Username: {{user.username}}</li>
+			<li>Email: {{user.email}}</li>
+			<li>First Name: {{user.first_name}}</li>
+			<li>Last Name: {{user.last_name}}</li>
+			<li>{{user.profile.bio}}</li>
+		</ul>
+	</div>
+</div>
 
 {% if barks %}
 
-{% for bark in barks %}
-	{% with template_name="bark/bark_component.html" %}
+<div class="card">
+	<div class="card-body">
+		<h2>
+			<span style="color: #0d6efd;">@{{user.username}}</span><span style="color: black;">'s Barks</span>
+		</h2>
+		{% for bark in barks %}
+		{% with template_name="bark/bark_component.html" %}
 		{% include template_name %}
-	{% endwith %}
-{% endfor %}
+		{% endwith %}
+		{% endfor %}
 
+	</div>
+</div>
 {% endif %}
 {% endblock %}

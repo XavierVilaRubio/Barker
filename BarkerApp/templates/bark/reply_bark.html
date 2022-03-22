@@ -1,14 +1,30 @@
 {% extends "base.html" %}
 {% block body %}
-<div>
-	<p>{{bark.author.user.username}}</p>
-	<p>{{bark.text}}</p>
-	{% if bark.media %}
-	<img src="{{bark.media.url}}" alt="">
-	{% endif %}
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+	<div class="card" style="width: auto; margin: 0 auto;">
+		<div class="card-body">
+			<h1>
+				<span style="color: black;">Reply to a</span>
+				<span style="color: #0d6efd;">Bark</span>
+			</h1>
+			<div>
+				<h2>
+					<span style="color: black;">From</span>
+					<span style="color: #0d6efd;">@{{bark.author.user.username}}</span>
+				</h2>
+				<div class="card" style="width: auto; margin: 0 auto;">
+					<p>{{bark.text}}</p>
+					{% if bark.media %}
+					<img src="{{bark.media.url}}" alt="">
+					{% endif %}
+				</div>
+			</div>
+			
+			<form method="POST"> {% csrf_token %}
+				{{ form.as_p }}
+				<input type="submit" value="Post!" />
+			</form>
+		</div>
+	</div>
 </div>
-<form method="POST"> {% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Enviar" />
-</form>
 {% endblock %}
