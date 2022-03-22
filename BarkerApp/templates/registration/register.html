@@ -42,7 +42,7 @@
       <div class="col-6 card">
         <div class="card-body">
           <form>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="usuarioRegistro">Usuario</label>
               <input type="text" class="form-control" id="usuarioRegistro" aria-describedby="userHelp"
                 placeholder="Introduzca un nombre de usuario.">
@@ -61,10 +61,29 @@
               <input type="checkbox" class="form-check-input" id="termsCheck">
               <label class="form-check-label" for="termsCheck">Acepto los <a href="http://127.0.0.1:8000/ToS/">términos
                   y
-                  condiciones</a></label> <!-- Aparece una card? -->
+                  condiciones</a></label>
             </div>
             <button type="submit" class="btn btn-primary">Registrarse</button>
-          </form>
+          </form> -->
+            <form method="POST"> {% csrf_token %}
+              {% for i in user_form %}
+              <div class="form-group">
+                <label for="passwordRegistro">{{i.label}}</label>
+                {{i}}
+                <small id="passwordHelp" class="form-text text-muted">{{i.help_text}}</small>
+              </div>
+              {% endfor %}
+              {% for i in profile_form %}
+              <div class="form-group">
+                <label for="passwordRegistro">{{i.label}}</label>
+                {{i}}
+                {% if i.help_text %}
+                <small id="passwordHelp" class="form-text text-muted">{{i.help_text}}</small>
+                {% endif %}
+              </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-primary">Login</button>
+            </form>
         </div>
       </div>
     </div>

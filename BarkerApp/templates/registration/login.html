@@ -49,9 +49,9 @@
               {{i}}
               <!-- <input type="password" class="form-control" id="passwordRegistro" aria-describedby="passwordHelp"
                   placeholder="Contraseña"> -->
-              <small id="passwordHelp" class="form-text text-muted">La contraseña debe contener, como mínimo, 8
-                carácteres
-                incluyendo un símbolo, una mayúscula, una minúscula y un número.</small>
+              {% if i.help_text %}
+              <small id="passwordHelp" class="form-text text-muted">{{i.help_text}}</small>
+              {% endif %}
             </div>
             {% endfor %}
             <button type="submit" class="btn btn-primary">Login</button>

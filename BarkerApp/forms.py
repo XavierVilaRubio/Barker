@@ -24,8 +24,12 @@ class ProfileForm(forms.ModelForm):
 class LoginForm(forms.ModelForm):
 	class Meta:
 		model = User
-		fields = ('username', 'password')
+		fields = ['username', 'password']
 
+		help_texts = {
+			'password': 'La contraseña debe contener, como mínimo, 8 carácteres incluyendo un símbolo, una mayúscula, una minúscula y un número',
+		}
+		
 		widgets = {
 			'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
 			'password': forms.TextInput(attrs={'type': 'password', 'class': 'form-control', 'placeholder': 'password'})
