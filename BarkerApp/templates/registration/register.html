@@ -2,46 +2,53 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barker</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barker</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style type="text/css">
+      #bg {
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+      }
 
-  <style type="text/css">
-    #bg {
-      position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-    }
+      #bg img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        min-width: 50%;
+        min-height: 50%;
+      }
+    </style>
+  </head>
 
-    #bg img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-      min-width: 50%;
-      min-height: 50%;
-    }
-  </style>
-</head>
-
-<body>
-  <div id="bg">
-    <img src="{% static 'assets/logo.svg' %}" height="500px" width="500px" alt="">
-  </div>
-  <div class="container vh-100">
-    <div class="row justify-content-center align-items-center h-100">
-      <div class="col-6 card">
-        <div class="card-body">
-          <form>
+  <body>
+    <div id="bg">
+      <img
+        src="{% static 'assets/logo.svg' %}"
+        height="500px"
+        width="500px"
+        alt=""
+      />
+    </div>
+    <div class="container vh-100">
+      <div class="row justify-content-center align-items-center h-100">
+        <div class="col-6 card">
+          <div class="card-body">
             <!-- <div class="form-group">
               <label for="usuarioRegistro">Usuario</label>
               <input type="text" class="form-control" id="usuarioRegistro" aria-describedby="userHelp"
@@ -65,42 +72,45 @@
             </div>
             <button type="submit" class="btn btn-primary">Registrarse</button>
           </form> -->
-            <form method="POST"> {% csrf_token %}
-              {% for i in user_form %}
+            <form method="POST">
+              {% csrf_token %} {% for i in user_form %}
               <div class="form-group">
                 <label for="passwordRegistro">{{i.label}}</label>
-                {{i}}
-                {% if i.help_text %}
-                <small id="passwordHelp" class="form-text text-muted">{{i.help_text}}</small>
+                {{i}} {% if i.help_text %}
+                <small id="passwordHelp" class="form-text text-muted"
+                  >{{i.help_text}}</small
+                >
+                {% endif %} {% if i.errors %}
+                <small id="passwordHelp" class="form-text text-muted"
+                  >{{i.errors}}</small
+                >
                 {% endif %}
-                {% if i.errors %}
-                <small id="passwordHelp" class="form-text text-muted">{{i.errors}}</small>
+              </div>
+              {% endfor %} {% for i in profile_form %}
+              <div class="form-group">
+                <label for="passwordRegistro">{{i.label}}</label>
+                {{i}} {% if i.help_text %}
+                <small id="passwordHelp" class="form-text text-muted"
+                  >{{i.help_text}}</small
+                >
+                {% endif %} {% if i.errors %}
+                <small id="passwordHelp" class="form-text text-muted"
+                  >{{i.errors}}</small
+                >
                 {% endif %}
               </div>
               {% endfor %}
-              {% for i in profile_form %}
+              <button type="submit" class="btn btn-primary">Register</button>
             </form>
-            <form method="POST"> {% csrf_token %}
-              <div class="form-group">
-                <label for="passwordRegistro">{{i.label}}</label>
-                {{i}}
-                {% if i.help_text %}
-                <small id="passwordHelp" class="form-text text-muted">{{i.help_text}}</small>
-                {% endif %}
-                {% if i.errors %}
-                <small id="passwordHelp" class="form-text text-muted">{{i.errors}}</small>
-                {% endif %}
-              </div>
-              {% endfor %}
-              <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"
+  ></script>
 </html>
