@@ -79,6 +79,8 @@
               </div>
               {% endfor %}
               {% for i in profile_form %}
+            </form>
+            <form method="POST"> {% csrf_token %}
               <div class="form-group">
                 <label for="passwordRegistro">{{i.label}}</label>
                 {{i}}
