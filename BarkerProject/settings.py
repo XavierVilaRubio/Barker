@@ -78,13 +78,14 @@ WSGI_APPLICATION = 'BarkerProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd3iclikvgb64fi',
+        'USER': 'ianevnnqiphjig',
+        'PASSWORD': '78c7391da14e33eca4205bd16302270055ed4a35f8d6dcf784069040f284f04e',
+        'HOST': 'ec2-3-225-213-67.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
