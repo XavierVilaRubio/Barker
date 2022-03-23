@@ -1,0 +1,1 @@
+web: gunicorn BarkerProject.wsgi --log-file -
