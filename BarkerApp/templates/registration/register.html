@@ -70,7 +70,12 @@
               <div class="form-group">
                 <label for="passwordRegistro">{{i.label}}</label>
                 {{i}}
+                {% if i.help_text %}
                 <small id="passwordHelp" class="form-text text-muted">{{i.help_text}}</small>
+                {% endif %}
+                {% if i.errors %}
+                <small id="passwordHelp" class="form-text text-muted">{{i.errors}}</small>
+                {% endif %}
               </div>
               {% endfor %}
               {% for i in profile_form %}
@@ -79,6 +84,9 @@
                 {{i}}
                 {% if i.help_text %}
                 <small id="passwordHelp" class="form-text text-muted">{{i.help_text}}</small>
+                {% endif %}
+                {% if i.errors %}
+                <small id="passwordHelp" class="form-text text-muted">{{i.errors}}</small>
                 {% endif %}
               </div>
               {% endfor %}

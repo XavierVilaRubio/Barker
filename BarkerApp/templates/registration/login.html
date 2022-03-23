@@ -52,6 +52,9 @@
               {% if i.help_text %}
               <small id="passwordHelp" class="form-text text-muted">{{i.help_text}}</small>
               {% endif %}
+              {% if i.errors %}
+              <small id="passwordHelp" class="form-text text-muted">{{i.errors}}</small>
+              {% endif %}
             </div>
             {% endfor %}
             <button type="submit" class="btn btn-primary">Login</button>

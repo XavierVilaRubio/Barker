@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 {% if user.profile.avatar %}
-<img src="{{user.profile.avatar.url}}" alt="">
+<img src="{{user.profile.avatar.url}}" alt="" height="45px">
 {%endif%}
 <h1 style="color: #0d6efd;">@{{user}}</h1>
 {% if user == request.user %}
