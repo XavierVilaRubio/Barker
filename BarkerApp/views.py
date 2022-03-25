@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserChangeForm
 
 from .forms import UserForm, ProfileForm, LoginForm, BarkForm
 from .models import Profile, Request, Bark
+from .utils import parseLinks
 
 # Create your views here.
 
@@ -177,6 +178,7 @@ def post_bark(request):
 
     if form.is_valid():
         bark = form.save(commit=False)
+        bark.text = parseLinks(bark.text)
         bark.author = request.user.profile
         bark.save()
 
