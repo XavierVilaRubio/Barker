@@ -1,5 +1,7 @@
 # Barker
 
+Authors: Mònica Casín, Cristian Oprea and Xavier Vila.
+
 [Barker App](https://boiling-mountain-92736.herokuapp.com/)
 
 Models definition:
