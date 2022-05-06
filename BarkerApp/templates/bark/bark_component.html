@@ -1,11 +1,40 @@
 <!-- <a href="/bark/{{bark.id}}"> -->
-<div class="bark">
-  <b>{{bark.author.user.username}}</b>
-  <p>{{bark.date}}</p>
+<div class="bark" id="{{bark.id}}">
+  <div class="top-row">
+    <div class="text">
+      <b>{{bark.author.user.username}}</b>
+      <p>{{bark.date}}</p>
+    </div>
+    {% if request.user == bark.author.user %}
+    <div class="dropwdown" id="dropdown">
+      <a class="author_options_button" type="button" id="author_options" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ...
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="author_options">
+        <li>
+          <a class="dropdown-item" href="/edit_bark/{{bark.id}}">Edit</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="/delete_bark/{{bark.id}}">Delete</a>
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+  </div>
   <p>{{bark.text|safe}}</p>
   {% if bark.media %}
   <img class="img-fluid" src="{{bark.media.url}}" alt="" />
   {% endif %}
   <a class="reply" href="/reply_bark/{{bark.id}}">Reply</a>
 </div>
+{% if request.resolver_match.kwargs.bark_id != bark.id %}
+<script>
+  const bark = document.getElementById("{{ bark.id }}")
+  bark.style.cursor = 'pointer'
+  bark.addEventListener("click", () => {
+    document.location.href = "{{ bark.get_absolute_url }}"
+  })
+</script>
+{% endif %}
 <!-- </a> -->

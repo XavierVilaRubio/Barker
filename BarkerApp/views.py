@@ -82,15 +82,15 @@ def get_profile_view(request, username):
 
     barks = Bark.objects.filter(author=user.profile)
 
+    status = 'follow'
     if request.user.username != username and request.user.is_authenticated:
+        print('si')
         if request.user.profile.connected_profiles.filter(user=user).exists():
             status = 'unfollow'
         elif Request.objects.filter(sender=user.profile, reciver=request.user.profile).exists():
             status = 'accept'
         elif Request.objects.filter(sender=request.user.profile, reciver=user.profile).exists():
             status = 'cancel'
-    else:
-        status = 'follow'
         
     context = {
         'user': user,
@@ -140,6 +140,7 @@ def send_request(request, username):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required(login_url='/accounts/login/')
 def unfollow(request, username):
     user = get_object_or_404(User, username=username)
     request.user.profile.connected_profiles.remove(user.profile)
@@ -147,6 +148,7 @@ def unfollow(request, username):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required(login_url='/accounts/login/')
 def accept_request(request, username):
     sender_user = User.objects.get(username=username)
     sender_profile = sender_user.profile
@@ -161,6 +163,7 @@ def accept_request(request, username):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required(login_url='/accounts/login/')
 def cancel_request(request, username):
     sender_user = request.user
     sender_profile = sender_user.profile
@@ -197,17 +200,18 @@ def get_bark(request, bark_id):
 
     context = {
         'bark': bark,
-        'editable': bark.author == request.user.profile
     }
 
     return render(request, 'bark/bark.html', context)
 
+@login_required(login_url='/accounts/login/')
 def delete_bark(request, bark_id):
     bark = get_object_or_404(Bark, id=bark_id)
     bark.delete()
     
     return redirect(request.user.profile.get_absolute_url())
 
+@login_required(login_url='/accounts/login/')
 def edit_bark(request, bark_id):
     bark = get_object_or_404(Bark, id=bark_id)
     form = BarkForm(request.POST or None, request.FILES or None, instance=bark)
@@ -223,6 +227,7 @@ def edit_bark(request, bark_id):
 
     return render(request, 'bark/edit_bark.html', context)
 
+@login_required(login_url='/accounts/login/')
 def reply_bark(request, bark_id):
    
     original_bark = get_object_or_404(Bark, id=bark_id)
