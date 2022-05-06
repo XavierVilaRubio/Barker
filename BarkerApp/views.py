@@ -245,3 +245,38 @@ def reply_bark(request, bark_id):
     }
 
     return render(request, 'bark/reply_bark.html', context)
+
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from rest_framework import generics
+from .models import Profile
+from .serializers import UserSerializer, ProfileSerializer
+
+def user_list(request):
+    if request.method == 'GET':
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+def user_detail(request, username):
+    user = get_object_or_404(User, username=username)
+
+    if request.method == 'GET':
+        serializer = UserSerializer(user)
+        return JsonResponse(serializer.data)
+
+@csrf_exempt
+def profile_list(request):
+    if request.method == 'GET':
+        profiles = Profile.objects.all()
+        serializer = ProfileSerializer(profiles, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+def profile_detail(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(Profile, user=user)
+
+    if request.method == 'GET':
+        serializer = ProfileSerializer(profile)
+        return JsonResponse(serializer.data)
