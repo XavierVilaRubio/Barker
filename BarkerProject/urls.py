@@ -22,6 +22,12 @@ from BarkerApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # API
+    path('api/users/', views.user_list),
+    path('api/user/<username>/', views.user_detail),
+    path('api/profiles/', views.profile_list),
+    path('api/profile/<username>/', views.profile_detail),
+    # VIEWS
     path('', views.index_view, name='index'),
     path('home/', views.home_view, name='home'),
     path('accounts/login/', LoginView.as_view(), name='login'),
