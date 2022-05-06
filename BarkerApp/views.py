@@ -82,7 +82,7 @@ def get_profile_view(request, username):
 
     barks = Bark.objects.filter(author=user.profile)
 
-    if request.user.is_authenticated:
+    if request.user.username != username and request.user.is_authenticated:
         if request.user.profile.connected_profiles.filter(user=user).exists():
             status = 'unfollow'
         elif Request.objects.filter(sender=user.profile, reciver=request.user.profile).exists():
