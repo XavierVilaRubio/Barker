@@ -13,6 +13,16 @@ main {
   border-radius: 10px;
 }
 
+.bark .top-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.bark .top-row .dropwdown .author_options_button {
+  width: 24px;
+}
+
 .bark-button {
   position: absolute;
   top: 0;
