@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth.forms import UserChangeForm
 
 from .forms import UserForm, ProfileForm, LoginForm, BarkForm
@@ -81,12 +81,13 @@ def get_profile_view(request, username):
 
     barks = Bark.objects.filter(author=user.profile)
 
-    if request.user.profile.connected_profiles.filter(user=user).exists():
-        status = 'unfollow'
-    elif Request.objects.filter(sender=user.profile, reciver=request.user.profile).exists():
-        status = 'accept'
-    elif Request.objects.filter(sender=request.user.profile, reciver=user.profile).exists():
-        status = 'cancel'
+    if request.user.is_authenticated:
+        if request.user.profile.connected_profiles.filter(user=user).exists():
+            status = 'unfollow'
+        elif Request.objects.filter(sender=user.profile, reciver=request.user.profile).exists():
+            status = 'accept'
+        elif Request.objects.filter(sender=request.user.profile, reciver=user.profile).exists():
+            status = 'cancel'
     else:
         status = 'follow'
         
