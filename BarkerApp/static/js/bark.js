@@ -2,17 +2,19 @@ const root = document.getElementById('root')
 
 const pathname = window.location.pathname;
 const pathnameParts = pathname.split('/')
-const barkID = pathnameParts[pathnameParts.length - 2]
+const barkAuthor = pathnameParts[2]
+const barkID = pathnameParts[3]
 
 console.log(pathname)
 console.log(pathnameParts)
+console.log(barkAuthor)
 console.log(barkID)
 
 async function getBark(barkID) {
 	const res = await fetch(`/api/barks/${barkID}`);
 	const bark = await res.json();
+	console.log(bark)
 	renderBark(bark);
-	getAuthor(bark.author);
 	renderDropdown(bark);
 }
 
@@ -22,7 +24,7 @@ function renderBark(bark) {
 	div.innerHTML = `
 		<div class="top-row">
     <div class="text">
-      <b id="author"></b>
+      <b id="author">${barkAuthor}</b>
       <p id="date">${bark.date}</p>
     </div>
     <div class="dropwdown" id="dropdown">
@@ -46,20 +48,6 @@ function renderBark(bark) {
 	`;
 
 	root.appendChild(div);
-}
-
-async function getAuthor(authorID) {
-	const res = await fetch(`/api/profiles/${authorID}`);
-	const author = await res.json();
-	renderAuthor(author);
-}
-
-async function renderAuthor(author) {
-	const res = await fetch(`/api/users/${author.user}`);
-	const user = await res.json();
-	const authorElement = document.getElementById('author');
-	authorElement.innerText = user.username;
-	// fer href al profile
 }
 
 function renderDropdown(bark) {

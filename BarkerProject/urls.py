@@ -32,6 +32,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
     # API
+    path('api-bark/<username>/<int:bark_id>', views.userBarkView),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # VIEWS
     path('index/', views.index_view, name='index'),

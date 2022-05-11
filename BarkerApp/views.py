@@ -294,3 +294,6 @@ class BarkViewSet(viewsets.ModelViewSet):
 
 def barkView(request, bark_id):
     return render(request, 'bark/bark_new.html')
+
+def userBarkView(request, username, bark_id):
+    return render(request, 'bark/bark_new.html')

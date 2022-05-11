@@ -18,6 +18,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 			'user',
 			'bio',
 			'avatar',
+			'barks',
 			'connected_profiles',
 		]
 
@@ -35,7 +36,6 @@ class BarkSerializer(serializers.ModelSerializer):
 		model = Bark
 		fields = [
 			'reply_to',
-			'author',
 			'text',
 			'media',
 			'date',
