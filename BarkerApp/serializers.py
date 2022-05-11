@@ -35,7 +35,7 @@ class BarkSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Bark
 		fields = [
-			'reply_to',
+			# 'reply_to',
 			'text',
 			'media',
 			'date',
