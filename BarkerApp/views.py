@@ -254,34 +254,43 @@ def reply_bark(request, bark_id):
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from rest_framework import generics
+from rest_framework import generics, viewsets, permissions, status
 from .models import Profile
-from .serializers import UserSerializer, ProfileSerializer
+from .serializers import UserSerializer, ProfileSerializer, RequestSerializer, BarkSerializer
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-def user_list(request):
-    if request.method == 'GET':
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return JsonResponse(serializer.data, safe=False)
+class UserViewSet(viewsets.ModelViewSet):
+    
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
 
-def user_detail(request, username):
-    user = get_object_or_404(User, username=username)
+class ProfileViewSet(viewsets.ModelViewSet):
+    
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.AllowAny]
 
-    if request.method == 'GET':
-        serializer = UserSerializer(user)
-        return JsonResponse(serializer.data)
+class RequestViewSet(viewsets.ModelViewSet):
+    
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer
+    permission_classes = [permissions.AllowAny]
 
-@csrf_exempt
-def profile_list(request):
-    if request.method == 'GET':
-        profiles = Profile.objects.all()
-        serializer = ProfileSerializer(profiles, many=True)
-        return JsonResponse(serializer.data, safe=False)
+class BarkViewSet(viewsets.ModelViewSet):
+    
+    queryset = Bark.objects.all()
+    serializer_class = BarkSerializer
+    permission_classes = [permissions.AllowAny]
 
-def profile_detail(request, username):
-    user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(Profile, user=user)
 
-    if request.method == 'GET':
-        serializer = ProfileSerializer(profile)
-        return JsonResponse(serializer.data)
+    # def get_permissions(self):
+    #     if self.action in ['update', 'partial_update', 'destroy']:
+    #         return request.user and is_authenticated(request.user)
+    #     else:
+    #         return True
+
+def barkView(request, bark_id):
+    return render(request, 'bark/bark_new.html')

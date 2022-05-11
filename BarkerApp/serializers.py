@@ -21,6 +21,15 @@ class ProfileSerializer(serializers.ModelSerializer):
 			'connected_profiles',
 		]
 
+class RequestSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Request
+		fields = [
+			'date',
+			'sender',
+			'reciver'
+		]
+
 class BarkSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Bark

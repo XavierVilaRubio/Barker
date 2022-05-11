@@ -17,18 +17,24 @@ from django.conf import settings
 from django.contrib.auth.views import LogoutView, LoginView
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from BarkerApp import views
 
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'api/users', views.UserViewSet)
+router.register(r'api/profiles', views.ProfileViewSet)
+router.register(r'api/requests', views.RequestViewSet)
+router.register(r'api/barks', views.BarkViewSet)
+
 urlpatterns = [
+    path('', include(router.urls)),
     path('admin/', admin.site.urls),
     # API
-    path('api/users/', views.user_list),
-    path('api/user/<username>/', views.user_detail),
-    path('api/profiles/', views.profile_list),
-    path('api/profile/<username>/', views.profile_detail),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # VIEWS
-    path('', views.index_view, name='index'),
+    path('index/', views.index_view, name='index'),
     path('home/', views.home_view, name='home'),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/register/', views.register_view, name='register'),
@@ -40,7 +46,8 @@ urlpatterns = [
     path('accept/<username>/', views.accept_request, name='accept'),
     path('cancel/<username>/', views.cancel_request, name='cancel'),
     path('post_bark/', views.post_bark, name='post_bark'),
-    path('bark/<int:bark_id>/', views.get_bark, name='bark'),
+    path('bark/<int:bark_id>/', views.barkView, name='bark'),
+    path('barks/<int:bark_id>/', views.get_bark, name='bark'),
     path('delete_bark/<int:bark_id>/', views.delete_bark, name='delete_bark'),
     path('edit_bark/<int:bark_id>/', views.edit_bark, name='edit_bark'),
     path('reply_bark/<int:bark_id>/', views.reply_bark, name='reply_bark'),
