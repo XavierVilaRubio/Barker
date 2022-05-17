@@ -273,6 +273,26 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     permission_classes = [permissions.AllowAny]
 
+    def retrieve(self, request, pk):
+        try:
+            user = User.objects.get(id=pk)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == 'GET':
+            profile = Profile.objects.get(user=user)
+            barks = Bark.objects.filter(author=profile)
+            serialized_user = UserSerializer(user)
+            serialized_profile = ProfileSerializer(profile)
+            serialized_barks = BarkSerializer(barks, many=True)
+            data = {
+                'user': serialized_user.data,
+                'profile': serialized_profile.data,
+                'barks': serialized_barks.data
+            }
+            return Response(data=data, status=status.HTTP_200_OK)
+
+
 class RequestViewSet(viewsets.ModelViewSet):
     
     queryset = Request.objects.all()
@@ -294,3 +314,48 @@ class BarkViewSet(viewsets.ModelViewSet):
 
 def barkView(request, bark_id):
     return render(request, 'bark/bark_new.html')
+
+def profileView(request, username):
+    return render(request, 'profile/profile_new.html')
+
+@api_view(['GET'])
+def getProfileInfo(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        profile = Profile.objects.get(user=user)
+        barks = Bark.objects.filter(author=profile)
+        serialized_user = UserSerializer(user)
+        serialized_profile = ProfileSerializer(profile)
+        serialized_barks = BarkSerializer(barks, many=True)
+        data = {
+            'user': serialized_user.data,
+            'profile': serialized_profile.data,
+            'barks': serialized_barks.data
+        }
+        return Response(data=data, status=status.HTTP_200_OK)
+
+# def get_profile_view(request, username):
+#     user = get_object_or_404(User, username=username)
+
+#     barks = Bark.objects.filter(author=user.profile)
+
+#     status = 'follow'
+#     if request.user.username != username and request.user.is_authenticated:
+#         print('si')
+#         if request.user.profile.connected_profiles.filter(user=user).exists():
+#             status = 'unfollow'
+#         elif Request.objects.filter(sender=user.profile, reciver=request.user.profile).exists():
+#             status = 'accept'
+#         elif Request.objects.filter(sender=request.user.profile, reciver=user.profile).exists():
+#             status = 'cancel'
+        
+#     context = {
+#         'user': user,
+#         'status': status,
+#         'barks': barks
+#     }
+#     return render(request, 'profile/profile.html', context)
