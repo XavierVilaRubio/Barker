@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth.forms import UserChangeForm
+from requests import request
 
 from .forms import UserForm, ProfileForm, LoginForm, BarkForm
 from .models import Profile, Request, Bark
@@ -336,26 +337,14 @@ def getProfileInfo(request, username):
             'profile': serialized_profile.data,
             'barks': serialized_barks.data
         }
-        return Response(data=data, status=status.HTTP_200_OK)
-
-# def get_profile_view(request, username):
-#     user = get_object_or_404(User, username=username)
-
-#     barks = Bark.objects.filter(author=user.profile)
-
-#     status = 'follow'
-#     if request.user.username != username and request.user.is_authenticated:
-#         print('si')
-#         if request.user.profile.connected_profiles.filter(user=user).exists():
-#             status = 'unfollow'
-#         elif Request.objects.filter(sender=user.profile, reciver=request.user.profile).exists():
-#             status = 'accept'
-#         elif Request.objects.filter(sender=request.user.profile, reciver=user.profile).exists():
-#             status = 'cancel'
-        
-#     context = {
-#         'user': user,
-#         'status': status,
-#         'barks': barks
-#     }
-#     return render(request, 'profile/profile.html', context)
+        response = Response(data=data, status=status.HTTP_200_OK)
+        return addUsernameCookieToResponse(request, response)
+    
+def addUsernameCookieToResponse(request, response):
+    if request.user.is_authenticated: 
+        response.set_cookie('username', request.user.username)
+    else: 
+        response.set_cookie('username', 'none')
+    
+    return response
+    
