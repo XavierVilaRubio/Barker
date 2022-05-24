@@ -8,7 +8,9 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = [
 			'id',
 			'username',
-			'email'
+			'email',
+			'first_name',
+			'last_name'
 		]
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -25,6 +27,7 @@ class RequestSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Request
 		fields = [
+			'id',
 			'date',
 			'sender',
 			'reciver'
@@ -34,6 +37,7 @@ class BarkSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Bark
 		fields = [
+			'id',
 			'reply_to',
 			'author',
 			'text',

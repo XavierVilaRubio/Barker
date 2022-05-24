@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<div class="card">
+	<div class="card-body">
+		<h1>
+			<span style="color: black;">Hi,</span>
+			<span style="color: #0d6efd;" id="username">@</span>
+		</h1>
+		<ul class="list-group" id="connections">
+			<li class="list-group-item active">Your connections:</li>
+		</ul>
+
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-body" id="barks">
+
+	</div>
+</div>
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}

@@ -276,7 +276,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk):
         try:
-            user = User.objects.get(id=pk)
+            user = User.objects.get(username=pk)
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -306,6 +306,30 @@ class BarkViewSet(viewsets.ModelViewSet):
     serializer_class = BarkSerializer
     permission_classes = [permissions.AllowAny]
 
+@api_view(['GET'])
+def getFriends(request):
+
+    connections = request.user.profile.connected_profiles.all()
+    users = []
+    for profile in connections:
+        users.append(profile.user)
+    users_serialized = UserSerializer(users, many=True)
+    return Response(data=users_serialized.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def getFriendsTimeline(request):
+
+    connections = request.user.profile.connected_profiles.all()
+    barks = []
+    for profile in connections:
+        barks += Bark.objects.filter(author=profile)
+    barks += Bark.objects.filter(author=request.user.profile)
+    barks.sort(key=lambda x: x.date, reverse=True)
+    print(barks)
+
+    serialized_barks = BarkSerializer(barks, many=True)
+    return Response(data=serialized_barks.data, status=status.HTTP_200_OK)
 
     # def get_permissions(self):
     #     if self.action in ['update', 'partial_update', 'destroy']:
@@ -319,32 +343,5 @@ def barkView(request, bark_id):
 def profileView(request, username):
     return render(request, 'profile/profile_new.html')
 
-@api_view(['GET'])
-def getProfileInfo(request, username):
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        profile = Profile.objects.get(user=user)
-        barks = Bark.objects.filter(author=profile)
-        serialized_user = UserSerializer(user)
-        serialized_profile = ProfileSerializer(profile)
-        serialized_barks = BarkSerializer(barks, many=True)
-        data = {
-            'user': serialized_user.data,
-            'profile': serialized_profile.data,
-            'barks': serialized_barks.data
-        }
-        response = Response(data=data, status=status.HTTP_200_OK)
-        return addUsernameCookieToResponse(request, response)
-    
-def addUsernameCookieToResponse(request, response):
-    if request.user.is_authenticated: 
-        response.set_cookie('username', request.user.username)
-    else: 
-        response.set_cookie('username', 'none')
-    
-    return response
-    
+def homeView(request):
+    return render(request, 'home_new.html')

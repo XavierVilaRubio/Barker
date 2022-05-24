@@ -33,9 +33,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # API
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/friends/', views.getFriends, name='friends'),
+    path('api/home/', views.getFriendsTimeline, name='friends-timeline'),
+    # API-VIEWS
+    path('home/', views.homeView, name='home'),
+    path('bark/<int:bark_id>/', views.barkView, name='bark'),
     # VIEWS
     path('index/', views.index_view, name='index'),
-    path('home/', views.home_view, name='home'),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/register/', views.register_view, name='register'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
@@ -46,11 +50,9 @@ urlpatterns = [
     path('accept/<username>/', views.accept_request, name='accept'),
     path('cancel/<username>/', views.cancel_request, name='cancel'),
     path('post_bark/', views.post_bark, name='post_bark'),
-    path('bark/<int:bark_id>/', views.barkView, name='bark'),
     path('barks/<int:bark_id>/', views.get_bark, name='bark'),
     path('delete_bark/<int:bark_id>/', views.delete_bark, name='delete_bark'),
     path('edit_bark/<int:bark_id>/', views.edit_bark, name='edit_bark'),
     path('reply_bark/<int:bark_id>/', views.reply_bark, name='reply_bark'),
-    path('<username>/', views.get_profile_view, name='profile'),
-    path('profile/<str:username>/', views.getProfileInfo, name='profile'),
+    path('<str:username>/', views.profileView, name='profile'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
