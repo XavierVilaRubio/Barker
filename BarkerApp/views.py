@@ -4,7 +4,6 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth.forms import UserChangeForm
-from requests import request
 
 from .forms import UserForm, ProfileForm, LoginForm, BarkForm
 from .models import Profile, Request, Bark
